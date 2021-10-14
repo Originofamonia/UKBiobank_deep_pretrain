@@ -1,5 +1,6 @@
 import torch.nn as nn
 
+
 def my_KLDivLoss(x, y):
     """Returns K-L Divergence loss
     Different from the default PyTorch nn.KLDivLoss in that
@@ -10,5 +11,5 @@ def my_KLDivLoss(x, y):
     y += 1e-16
     n = y.shape[0]
     loss = loss_func(x, y) / n
-    #print(loss)
+    # print(loss)
     return loss

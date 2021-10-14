@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.stats import norm
 
+
 def num2vect(x, bin_range, bin_step, sigma):
     """
     v,bin_centers = number2vector(x,bin_range,bin_step,sigma)
@@ -18,7 +19,8 @@ def num2vect(x, bin_range, bin_step, sigma):
         print("bin's range should be divisible by bin_step!")
         return -1
     bin_number = int(bin_length / bin_step)
-    bin_centers = bin_start + float(bin_step) / 2 + bin_step * np.arange(bin_number)
+    bin_centers = bin_start + float(bin_step) / 2 + bin_step * np.arange(
+        bin_number)
 
     if sigma == 0:
         x = np.array(x)
@@ -43,8 +45,8 @@ def num2vect(x, bin_range, bin_step, sigma):
                     cdfs = norm.cdf([x1, x2], loc=x[j], scale=sigma)
                     v[j, i] = cdfs[1] - cdfs[0]
             return v, bin_centers
-        
-        
+
+
 def crop_center(data, out_sp):
     """
     Returns the center part of volume data.

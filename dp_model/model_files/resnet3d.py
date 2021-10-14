@@ -5,7 +5,8 @@ import torch.nn.functional as F
 __all__ = ['ResNet', 'resnet18', 'resnet34', 'resnet50', 'resnet101',
            'resnet152']
 
-# Based on torchvision implementation 
+
+# Based on torchvision implementation
 # https://github.com/pytorch/vision/blob/master/torchvision/models/resnet.py
 
 
@@ -57,7 +58,8 @@ class Bottleneck(nn.Module):
         self.conv2 = nn.Conv3d(planes, planes, kernel_size=3, stride=stride,
                                padding=1, bias=False)
         self.bn2 = nn.BatchNorm3d(planes)
-        self.conv3 = nn.Conv3d(planes, planes * self.expansion, kernel_size=1, bias=False)
+        self.conv3 = nn.Conv3d(planes, planes * self.expansion, kernel_size=1,
+                               bias=False)
         self.bn3 = nn.BatchNorm3d(planes * self.expansion)
         self.relu = nn.ReLU(inplace=True)
         self.downsample = downsample
@@ -88,22 +90,29 @@ class Bottleneck(nn.Module):
 
 class ResNet(nn.Module):
     def __init__(self, block, layers, num_classes=1000,
-                 channel_size=[64,64,128,256,512],
+                 channel_size=None,
                  dropout=False):
+        if channel_size is None:
+            channel_size = [64, 64, 128, 256, 512]
         c = channel_size
         self.inplanes = c[0]
         super(ResNet, self).__init__()
         net = nn.Sequential()
-        net.add_module('conv1', nn.Conv3d(1, c[0], kernel_size=7, stride=2, padding=0,
-                               bias=False))
+        net.add_module('conv1', nn.Conv3d(1, c[0], kernel_size=7, stride=2,
+                                          padding=0,
+                                          bias=False))
         net.add_module('bn1', nn.BatchNorm3d(c[0]))
         net.add_module('relu', nn.ReLU(inplace=True))
-        net.add_module('maxpool', nn.MaxPool3d(kernel_size=3, stride=2, padding=1))
+        net.add_module('maxpool',
+                       nn.MaxPool3d(kernel_size=3, stride=2, padding=1))
         net.add_module('layer1', self._make_layer(block, c[1], layers[0]))
-        net.add_module('layer2', self._make_layer(block, c[2], layers[1], stride=2))
-        net.add_module('layer3', self._make_layer(block, c[3], layers[2], stride=2))
-        net.add_module('layer4', self._make_layer(block, c[4], layers[3], stride=2))
-        net.add_module('avgpool', nn.AvgPool3d([5,6,5], stride=1))
+        net.add_module('layer2',
+                       self._make_layer(block, c[2], layers[1], stride=2))
+        net.add_module('layer3',
+                       self._make_layer(block, c[3], layers[2], stride=2))
+        net.add_module('layer4',
+                       self._make_layer(block, c[4], layers[3], stride=2))
+        net.add_module('avgpool', nn.AvgPool3d([5, 6, 5], stride=1))
         if dropout is True:
             net.add_module('dropout', nn.Dropout(0.5))
         self.feature_extractor = net
@@ -111,7 +120,8 @@ class ResNet(nn.Module):
 
         for m in self.modules():
             if isinstance(m, nn.Conv3d):
-                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+                nn.init.kaiming_normal_(m.weight, mode='fan_out',
+                                        nonlinearity='relu')
             elif isinstance(m, nn.BatchNorm3d):
                 nn.init.constant_(m.weight, 1)
                 nn.init.constant_(m.bias, 0)
@@ -125,8 +135,7 @@ class ResNet(nn.Module):
                 nn.BatchNorm3d(planes * block.expansion),
             )
 
-        layers = []
-        layers.append(block(self.inplanes, planes, stride, downsample))
+        layers = [block(self.inplanes, planes, stride, downsample)]
         self.inplanes = planes * block.expansion
         for i in range(1, blocks):
             layers.append(block(self.inplanes, planes))
@@ -145,11 +154,11 @@ def resnet18(**kwargs):
     """Constructs a ResNet-18 model.
     Args:
     """
-    model = ResNet(BasicBlock, [2, 2, 2, 2], **kwargs
+    model = ResNet(BasicBlock, [2, 2, 2, 2], **kwargs)
     return model
 
 
-def resnet34**kwargs):
+def resnet34(**kwargs):
     """Constructs a ResNet-34 model.
     Args:
     """
