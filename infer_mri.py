@@ -30,7 +30,7 @@ def evaluate(args, model, test_dl):
             batch_x, batch_y = batch
             # compute the outputs
             _, feat = model(batch_x)
-            # print(feat)
+            print(feat.size())
             feats.append(feat.squeeze().detach().cpu().numpy())
             labels.append(batch_y.squeeze().detach().cpu().numpy())
 
