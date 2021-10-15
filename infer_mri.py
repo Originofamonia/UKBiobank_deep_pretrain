@@ -50,6 +50,7 @@ def main():
     fp_ = './brain_age/run_20190719_00_epoch_best_mae.p'
     model.load_state_dict(torch.load(fp_))
     model.cuda()
+    model.double()
 
     parser = ArgumentParser()
     parser.add_argument('--gpus', type=int, default=None)
