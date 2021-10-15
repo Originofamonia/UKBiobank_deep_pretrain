@@ -46,7 +46,7 @@ def evaluate(args, model, test_dl):
 
 def main():
     model = SFCN()
-    # model = torch.nn.DataParallel(model)
+    model = torch.nn.DataParallel(model)
     fp_ = './brain_age/run_20190719_00_epoch_best_mae.p'
     model.load_state_dict(torch.load(fp_))
     model.cuda()
