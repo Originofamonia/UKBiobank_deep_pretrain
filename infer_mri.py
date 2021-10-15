@@ -76,3 +76,7 @@ def main():
     test_dl = ld_helper.get_test_dl(batch_size=1)
 
     evaluate(args, model, test_dl)
+
+
+if __name__ == '__main__':
+    main()
