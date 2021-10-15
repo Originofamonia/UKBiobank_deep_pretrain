@@ -68,7 +68,7 @@ class FcmNormalize:
         data -= 0.098  # mu
         data /= 0.273  # std
         data = torch.from_numpy(data)
-        data = torch.unsqueeze(data, dim=1)  # for conv3D
+        data = torch.unsqueeze(data, dim=0)  # for conv3D
         return data
 
 
