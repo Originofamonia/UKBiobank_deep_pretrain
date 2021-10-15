@@ -29,7 +29,7 @@ def evaluate(args, model, test_dl):
             batch = tuple(item.to(args.device) for item in batch)
             batch_x, batch_y = batch
             # compute the outputs
-            feat = model.get_feat(batch_x)
+            _, feat = model(batch_x)
             # print(feat)
             feats.append(feat.squeeze().detach().cpu().numpy())
             labels.append(batch_y.squeeze().detach().cpu().numpy())

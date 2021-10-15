@@ -67,7 +67,7 @@ class SFCN(nn.Module):
         x = self.classifier(x_f)
         x = F.log_softmax(x, dim=1)
         out.append(x)
-        return out
+        return out, x_f
 
     def get_feat(self, x):
         x_f = self.feature_extractor(x)
